@@ -28,8 +28,8 @@ namespace API.Controllers
 
             [HttpGet("servererror")]
             public ActionResult GetServerError(){
-                Product thing = _context.Products.Find(42);
-                var thingToReturn = thing.ToString();
+                Product? thing = _context.Products!.Find(42);
+                var thingToReturn = thing!.ToString();
                 return Ok();
             }
 
