@@ -19,10 +19,10 @@ namespace API.Errors
         private string GetDeafultMessageByStatusCode(int statusCode)
         {
             return statusCode switch{
-                400 => "حصل خطأ بالمخدم",
-                401 => "حصل خطأ بالمخدم",
-                404 => "حصل خطأ بالمخدم",
-                500 => "حصل خطأ بالمخدم",
+                400 => "You made a Bad Request !",
+                401 => "You are unauthorized to go there !!!",
+                404 => "Not Found",
+                500 => "INTERANL SERVER ERROR: something has gone wrong on the web site's server but the server could not be more specific on what the exact problem is.",
                 _ => "I don't know what is the error but also حصل خطأ بالمخدم"
             };
         }

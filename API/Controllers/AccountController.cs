@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using API.DTOs;
+﻿using API.DTOs;
 using API.Errors;
 using API.Extensions;
 using AutoMapper;
