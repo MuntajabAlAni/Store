@@ -20,15 +20,31 @@ export class BasketService {
 
   constructor(private http: HttpClient) { }
 
+  createPaymentIntent(){
+    return this.http.post(this.baseUrl + 'payments/' + this.getCurrentBasketValue()!.id, {})
+    .pipe(
+      map((basket) => {
+        this.basketSource.next(basket as IBasket);
+        console.log(this.getCurrentBasketValue());
+      })
+    );
+  }
+
+
   setShippingPrice(deliveryMehod: IDeliveryMethod){
     this.shipping = deliveryMehod.price;
+    const basket = this.getCurrentBasketValue();
+    basket!.deliverMethodId = deliveryMehod.id;
+    basket!.shippingPrice = deliveryMehod.price;
     this.calculateTotals();
+    this.setBasket(basket!);
   }
 
   getBasket(id: string) {
     return this.http.get(this.baseUrl + 'basket?id=' + id).pipe(
       map((basket) => {
         this.basketSource.next(basket as IBasket);
+        this.shipping = (basket as IBasket).shippingPrice!;
         this.calculateTotals();
       })
     );

@@ -18,14 +18,15 @@ export class CheckoutAddressComponent implements OnInit {
 
   saveUserAddress() {
     this.accountService.updateUserAddress(this.checkoutForm.get('addressForm')?.value).subscribe({
-      next: () => {
+      next: (address) => {
         this.toastr.success('Address saved');
+        this.checkoutForm.get('addressForm')!.reset(address);
       }
       , error: error => {
         this.toastr.error(error.message);
         console.log(error);
       }
-    })
+    });
   }
 
 }

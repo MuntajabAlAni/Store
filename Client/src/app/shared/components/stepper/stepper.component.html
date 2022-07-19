@@ -4,8 +4,9 @@
             <button 
                 [class.active]="selectedIndex === i"
                 class="nav-link text-uppercase font-weight-bold bn-block" style="padding: 1.20em;"
-                (click)="onClick(i)">
-                {{step.label}}:{{step.completed}}
+                (click)="onClick(i)"
+                [disabled]="true">
+                {{step.label}}
             </button>
         </li>
     </ul>
