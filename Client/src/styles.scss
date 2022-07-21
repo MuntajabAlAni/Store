@@ -6,21 +6,25 @@
 /* Importing Datepicker SCSS file. */
 @import "node_modules/ngx-bootstrap/datepicker/bs-datepicker";
 
-.xng-breadcrumb-root{
+@import "../node_modules/ngx-toastr/toastr.css";
+@import "../node_modules/font-awesome/css/font-awesome.min.css";
+@import "../node_modules/bootswatch/dist/united/bootstrap.min.css";
+
+.xng-breadcrumb-root {
     padding: 8px 16px;
     display: inline;
     border-radius: 0;
 }
 
-label.xng-breadcrumb-trail{
+label.xng-breadcrumb-trail {
     margin-bottom: 0;
     color: blue;
 }
 
-.xng-breadcrumb-seperator{
+.xng-breadcrumb-seperator {
     padding: 0 0;
 }
 
-.StripeElement{
+.StripeElement {
     height: calc(3.5rem + 2px);
 }

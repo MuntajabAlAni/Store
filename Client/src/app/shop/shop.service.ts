@@ -13,6 +13,7 @@ import { ShopParams } from '../shared/models/shopParams';
   providedIn: 'root'
 })
 export class ShopService {
+  baseUrl = environment.apiUrl;
   products: IProduct[] = [];
   brands: IBrand[] = [];
   types: IType[] = [];
@@ -49,7 +50,7 @@ export class ShopService {
     params = params.append('PageIndex', this.shopParams.pageNumber.toString());
     params = params.append('PageSize', this.shopParams.pageSize.toString());
 
-    return this.http.get<IPagination>(environment.apiUrl + 'products', { observe: "response", params })
+    return this.http.get<IPagination>(this.baseUrl + 'products', { observe: "response", params })
       .pipe(
         map(response => {
           this.productCach.set(Object.values(this.shopParams).join('-'), response.body!.data);
@@ -73,14 +74,14 @@ export class ShopService {
 
     if (product) return of(product);
 
-    return this.http.get<IProduct>(environment.apiUrl + 'products/' + id);
+    return this.http.get<IProduct>(this.baseUrl + 'products/' + id);
   }
 
   getTypes() {
     if (this.types.length > 0)
       return of(this.types);
 
-    return this.http.get<IType[]>(environment.apiUrl + 'Products/types').pipe(
+    return this.http.get<IType[]>(this.baseUrl + 'Products/types').pipe(
       map(response => {
         this.types = response;
         return response;
@@ -92,7 +93,7 @@ export class ShopService {
     if (this.brands.length > 0)
       return of(this.brands);
 
-    return this.http.get<IBrand[]>(environment.apiUrl + 'Products/brands').pipe(
+    return this.http.get<IBrand[]>(this.baseUrl + 'Products/brands').pipe(
       map(response => {
         this.brands = response;
         return response;
