@@ -65,8 +65,9 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int>("DeliveryMethodId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTimeOffset>("OrderDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<string>("OrderDate")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("PaymentIntentId")
                         .IsRequired()

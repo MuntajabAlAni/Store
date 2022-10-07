@@ -17,26 +17,22 @@ export class TestErrorComponent implements OnInit {
 
   get404Error(){
     this.http.get(environment.apiUrl + 'products/42').subscribe({
-      next: respone => console.log(respone),
       error: error => console.log(error)
     });
   }
 
   get500Error(){
     this.http.get(environment.apiUrl + 'buggy/servererror').subscribe({
-      next: respone => console.log(respone),
       error: error => console.log(error)
     });
   }
   get400Error(){
     this.http.get(environment.apiUrl + 'buggy/badrequest').subscribe({
-      next: respone => console.log(respone),
       error: error => console.log(error)
     });
   }
   get400ValidationError(){
     this.http.get(environment.apiUrl + 'products/test').subscribe({
-      next: respone => console.log(respone),
       error: error =>{ console.log(error);
       this.validationErrors = error.errors}
     });

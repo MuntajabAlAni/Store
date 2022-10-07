@@ -31,7 +31,7 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<Pagination<ProductToReturnDto>>> GetProducts([FromQuery]ProductSpecificationParameters productParameters)
         {
-            var spec = new ProductWithTypesAndBrandsSpecification(productParameters);
+            var spec = new ProductWithTypesAndBrandsSpecification(productParameters);   
 
             var countSpec = new ProductWithFiltersForCountSpecification(productParameters);
 
@@ -56,12 +56,14 @@ namespace API.Controllers
             if(product is null) return NotFound(new ApiResponse(404));
             return _mapper.Map<Product, ProductToReturnDto>(product);
         }
+        
         [Cached(600)]
         [HttpGet("brands")]
         public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetProductBrands()
         {
             return Ok(await _productBrandsRepo.ListAllAsync());
         }
+        
         [Cached(600)]
         [HttpGet("types")]
         public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetProductTypes()

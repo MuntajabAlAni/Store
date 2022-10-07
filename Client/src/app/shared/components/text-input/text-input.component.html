@@ -1,8 +1,14 @@
 <div class="form-floating my-2">
-    <input [ngClass]="(controlDir && controlDir.control && controlDir.control.touched)
-     ? !controlDir.control.valid ? 'is-invalid' : 'is-valid' : ''" [type]="type"
-        (input)="onChange($event.target.value)" (blur)="onTouched()" class="form-control" formControlName="email"
-        id="{{label}}" #input placeholder="{{label}}">
+    <input 
+    [ngClass]="(controlDir && controlDir.control && controlDir.control.touched)
+     ? !controlDir.control.valid ? 'is-invalid' : 'is-valid' : ''"
+      [type]="type"
+      (input)="onChange($event.target.value)"
+      (blur)="onTouched()"
+      class="form-control"
+      id="{{label}}"
+      #input 
+      placeholder="{{label}}">
 
     <div class="fa fa-spinner fa-spin loader"
         *ngIf="controlDir && controlDir.control && controlDir.control.status === 'PENDING'"></div>

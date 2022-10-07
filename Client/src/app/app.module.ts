@@ -10,10 +10,7 @@ import { HomeModule } from './home/home.module';
 import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
-import { CheckoutComponent } from './checkout/checkout.component';
 import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
-import { OrdersComponent } from './orders/orders.component';
-import { OrderDetailsComponent } from './orders/order-details/order-details.component';
 
 @NgModule({
   declarations: [

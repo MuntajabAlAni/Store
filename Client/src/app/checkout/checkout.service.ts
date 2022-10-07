@@ -13,17 +13,15 @@ export class CheckoutService {
 
   constructor(private http: HttpClient) { }
 
-  createOrder(order: IOrderToCreate){
+  createOrder(order: IOrderToCreate) {
     return this.http.post(this.baseUrl + 'orders', order);
   }
 
-  getDeliveryMethods(){
+  getDeliveryMethods() {
     return this.http.get(this.baseUrl + 'orders/deliveryMethods').pipe(
-      // map((dm: IDeliveryMethod[]) =>{
-      //   return dm.sort((a,b) =>{
-      //     b.price - a.price
-      //   });
-      // })
+      map((dm) => {
+        return (dm as IDeliveryMethod[]).sort((a, b) => b.price - a.price);
+      })
     );
   }
 }

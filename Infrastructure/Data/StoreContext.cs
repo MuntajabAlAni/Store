@@ -14,7 +14,6 @@ namespace Infrastructure.Data
     {
         public StoreContext(DbContextOptions<StoreContext> options) : base(options)
         {
-
         }
 
         public DbSet<Product>? Products { get; set; }
@@ -29,20 +28,45 @@ namespace Infrastructure.Data
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-            if (Database.ProviderName != "Microsoft.EntityFrameworkCore.Sqlite") return;
-            
-            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            switch (Database.ProviderName)
             {
-                var decimalProperties = entityType.ClrType.GetProperties().Where(p => p.PropertyType == typeof(decimal));
-                var dateTimeProperties = entityType.ClrType.GetProperties().Where(p => p.PropertyType == typeof(DateTimeOffset));
-                foreach (var property in decimalProperties)
+                case "Microsoft.EntityFrameworkCore.Sqlite":
                 {
-                    modelBuilder.Entity(entityType.Name).Property(property.Name).HasConversion<double>();
+                    foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+                    {
+                        var decimalProperties =
+                            entityType.ClrType.GetProperties().Where(p => p.PropertyType == typeof(decimal));
+                        var dateTimeProperties = entityType.ClrType.GetProperties()
+                            .Where(p => p.PropertyType == typeof(DateTimeOffset));
+                        foreach (var property in decimalProperties)
+                        {
+                            modelBuilder.Entity(entityType.Name).Property(property.Name).HasConversion<double>();
+                        }
+
+                        foreach (var property in dateTimeProperties)
+                        {
+                            modelBuilder.Entity(entityType.Name).Property(property.Name)
+                                .HasConversion(new DateTimeOffsetToBinaryConverter());
+                        }
+                    }
+
+                    break;
                 }
-                foreach (var property in dateTimeProperties)
+                /*case "Npgsql.EntityFrameworkCore.PostgreSQL":
                 {
-                    modelBuilder.Entity(entityType.Name).Property(property.Name).HasConversion(new DateTimeOffsetToBinaryConverter());
-                }
+                    foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+                    {
+                        var dateTimeProperties = entityType.ClrType.GetProperties()
+                            .Where(p => p.PropertyType == typeof(DateTimeOffset));
+                        foreach (var property in dateTimeProperties)
+                        {
+                            modelBuilder.Entity(entityType.Name).Property(property.Name)
+                                .HasConversion(new DateTimeOffsetToBinaryConverter());
+                        }
+                    }
+
+                    break;
+                }*/
             }
         }
     }

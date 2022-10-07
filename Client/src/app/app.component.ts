@@ -9,7 +9,7 @@ import { BasketService } from './basket/basket.service';
 })
 
 export class AppComponent implements OnInit {
-  title = 'MyStore';
+  title = 'Booky';
 
   constructor(private basketService: BasketService, private accountService: AccountService) { }
 
@@ -21,9 +21,6 @@ export class AppComponent implements OnInit {
   loadCurrentUser() {
     const token = localStorage.getItem('token');
     this.accountService.loadCurrentUser(token)?.subscribe({
-      next: () => {
-        console.log('user loaded');
-      },
       error: (error: any) => { 
         console.log(error) 
       }
@@ -34,9 +31,6 @@ export class AppComponent implements OnInit {
     const basketId = localStorage.getItem('basket_id');
     if (basketId) {
       this.basketService.getBasket(basketId).subscribe({
-        next: () => {
-          console.log('there is a basket !!');
-        },
         error: error => {
           console.log(error);
         }

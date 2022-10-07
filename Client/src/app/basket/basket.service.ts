@@ -25,7 +25,6 @@ export class BasketService {
     .pipe(
       map((basket) => {
         this.basketSource.next(basket as IBasket);
-        console.log(this.getCurrentBasketValue());
       })
     );
   }
@@ -34,9 +33,8 @@ export class BasketService {
   setShippingPrice(deliveryMehod: IDeliveryMethod){
     this.shipping = deliveryMehod.price;
     const basket = this.getCurrentBasketValue();
-    basket!.deliverMethodId = deliveryMehod.id;
+    basket!.deliveryMethodId = deliveryMehod.id;
     basket!.shippingPrice = deliveryMehod.price;
-    this.calculateTotals();
     this.setBasket(basket!);
   }
 

@@ -7,5 +7,5 @@ public static class ClaimsPrincipleExtensions
     public static string RetrieveEmailFromPrincipal(this ClaimsPrincipal user)
     {
         return user.FindFirstValue(ClaimTypes.Email);
-    }
+    }   
 }

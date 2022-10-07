@@ -1,12 +1,11 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace Infrastructure.Data.Migrations
 {
-    public partial class PostGresinitial : Migration
+    public partial class PostgreSQLInitial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -59,7 +58,7 @@ namespace Infrastructure.Data.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     BuyerEmail = table.Column<string>(type: "text", nullable: false),
-                    OrderDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    OrderDate = table.Column<string>(type: "text", nullable: false),
                     ShipToAddress_FirstName = table.Column<string>(type: "text", nullable: false),
                     ShipToAddress_LastName = table.Column<string>(type: "text", nullable: false),
                     ShipToAddress_Street = table.Column<string>(type: "text", nullable: false),
