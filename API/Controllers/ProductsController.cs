@@ -17,11 +17,15 @@ namespace API.Controllers
         private readonly IGenericRepository<ProductBrand> _productBrandsRepo;
         private readonly IGenericRepository<ProductType> _productTypesRepo;
         private readonly IMapper _mapper;
+        
+        private readonly IUnitOfWork _unitOfWork;
+
         public ProductsController(IGenericRepository<Product> productsRepo, IGenericRepository<ProductBrand> productBrandsRepo,
 
-        IGenericRepository<ProductType> productTypesRepo, IMapper mapper)
+        IGenericRepository<ProductType> productTypesRepo, IMapper mapper, IUnitOfWork unitOfWork)
         {
             _mapper = mapper;
+            _unitOfWork = unitOfWork;
             _productTypesRepo = productTypesRepo;
             _productBrandsRepo = productBrandsRepo;
             _productsRepo = productsRepo;
@@ -69,6 +73,49 @@ namespace API.Controllers
         public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetProductTypes()
         {
             return Ok(await _productTypesRepo.ListAllAsync());
+        }
+        
+        [HttpPost]
+        public async Task<ActionResult<Product>> Create([FromForm] ProductDto productDto)
+        {
+            var product = _mapper.Map<Product>(productDto);
+            product.PictureUrl = await CopyFileToServerAsync(productDto.Image!);
+
+            _unitOfWork.Repository<Product>().Add(product);
+            var result = await _unitOfWork.Complete();
+            
+            return Ok(result <= 0 ? null : product);
+        }
+        
+        [HttpPut]
+        public async Task<ActionResult<Product>> Update([FromForm] ProductDto productDto)
+        {
+            var product = _mapper.Map<Product>(productDto);
+            product.PictureUrl = await CopyFileToServerAsync(productDto.Image!);
+        
+            await DeleteFileFromServer(product.PictureUrl);
+        
+            _unitOfWork.Repository<Product>().Update(product);
+            var result = await _unitOfWork.Complete();
+        
+            return Ok(result <= 0 ? null : product);
+        }
+        private static async Task<string> CopyFileToServerAsync(IFormFile image)
+        {
+            var imageFolderName = Path.Combine("Resources", "ProductsImages");
+            var imageUrl = Guid.NewGuid() + Path.GetExtension(image.FileName);
+            var pathToSaveImage = Path.Combine(imageFolderName, imageUrl);
+
+            await using var streamImage = new FileStream((pathToSaveImage), FileMode.Create);
+            await image.CopyToAsync(streamImage);
+            return imageUrl;
+        }
+        private async static Task DeleteFileFromServer(string pictureUrl)
+        {
+            var imageFolderName = Path.Combine("Resources", "ProductImages");
+            var pathToDeleteImage = Path.Combine(imageFolderName, pictureUrl);
+
+            System.IO.File.Delete(pathToDeleteImage);
         }
     }
 }
